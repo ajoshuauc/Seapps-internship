@@ -14,13 +14,16 @@ const app = express()
 
 //middleware
 app.use(express.json())
+app.use(express.static('public'))
 
 // view engine
 app.set('view engine', 'ejs')
 
 //routes
-app.use('/user', userRoutes)
-app.use('/admin', adminRoutes)
+app.use('/user/login', userRoutes, (req, res) => res.render('login'))
+app.use('/user/signup', userRoutes)
+app.use('/admin/login', adminRoutes)
+app.use('/admin/signup', adminRoutes)
 app.use('/employee', employeeRoutes)
 
 //database connection
