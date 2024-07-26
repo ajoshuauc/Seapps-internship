@@ -20,10 +20,10 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
 //routes
-app.use('/user/login', userRoutes, (req, res) => res.render('login'))
-app.use('/user/signup', userRoutes)
-app.use('/admin/login', adminRoutes)
-app.use('/admin/signup', adminRoutes)
+app.use('/user', userRoutes, (req, res) => res.render('login'))
+app.use('/user', userRoutes)
+app.use('/admin', adminRoutes)
+app.use('/admin', adminRoutes)
 app.use('/employee', employeeRoutes)
 
 //database connection
