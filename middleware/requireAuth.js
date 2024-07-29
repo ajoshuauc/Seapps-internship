@@ -17,11 +17,11 @@ const requireAuth = async (req, res, next) => {
         const { _id } = jwt.verify(token, process.env.SECRET)
  
             req.user = await User.findOne({ _id }).select(' _id')
-            if ()
+            
         
         next()
     } catch (error) {
-        res.redirect('/signup') // redirecto signup
+        res.redirect('/login') // redirecto signup
         res.status(401).json({ error: 'Request is not authoriazed' })
     }
 }

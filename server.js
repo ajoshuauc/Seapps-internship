@@ -15,16 +15,18 @@ const app = express()
 //middleware
 app.use(express.json())
 app.use(express.static('public'))
+app.use(cookieParser())
+const requireAuth = require('./middleware/requireAuth')
 
 // view engine
 app.set('view engine', 'ejs')
 
 //routes
-app.use('/user', userRoutes, (req, res) => res.render('login'))
-app.use('/user', userRoutes)
-app.use('/admin', adminRoutes)
-app.use('/admin', adminRoutes)
-app.use('/employee', employeeRoutes)
+app.use(userRoutes) // signup and login of user
+app.use(adminRoutes)// login of admin
+
+
+
 
 //database connection
 mongoose.connect(process.env.MONGO_URI)

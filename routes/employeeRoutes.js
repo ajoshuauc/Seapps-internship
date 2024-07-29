@@ -5,11 +5,17 @@ const app = express()
 const router = express.Router()
 
 //controller functions
-const { employeeSignup } = require('../controllers/employeeController')
+const { employeeSignup, employeeLogin, employeeLogOut } = require('../controllers/employeeController')
 
 //const {} = require('./userRoutes')
 
 //signup route
-router.post('/signup', employeeSignup)
+router.post('/signup-employee', employeeSignup)
+
+//login route
+router.post('/login-employee', employeeLogin)
+
+//logout route
+router.get('/logout-employee', employeeLogOut)
 
 module.exports = router

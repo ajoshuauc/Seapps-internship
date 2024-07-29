@@ -1,6 +1,7 @@
 const Admin = require('../models/admin')
 const jwt = require('jsonwebtoken')
 
+const maxAge = 3 * 24 * 60 * 60
 const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d' })
 }
@@ -14,6 +15,7 @@ const adminSignup = async (req, res) => {
         const user = await Admin.signup(name, email, password)
         //create token
         const token = createToken(user._id)
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
 
         //json response
         res.status(200).json({ email, token })
@@ -32,6 +34,7 @@ const adminLogin = async (req, res) => {
 
         //create token
         const token = createToken(user._id)
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
 
         //json response
         res.status(200).json({ email, token })
@@ -40,12 +43,13 @@ const adminLogin = async (req, res) => {
     }
 }
 
-const logOut = (req, res) => {
+const adminLogOut = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 })
-    res.redirect('/login')
+    res.redirect('login')
 }
 
 module.exports = {
     adminSignup,
-    adminLogin
+    adminLogin,
+    adminLogOut
 }
