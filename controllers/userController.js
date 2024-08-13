@@ -53,7 +53,7 @@ const userLogin = async (req, res) => {
     }
     
 }
-
+//log out
 const logOut = (req, res) => {
    res.clearCookie('jwt')
     res.redirect('/user/login')

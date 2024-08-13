@@ -59,6 +59,7 @@ const adminLogin = async (req, res) => {
     }
 }
 
+//log out
 const adminLogOut = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 })
     res.redirect('login')
