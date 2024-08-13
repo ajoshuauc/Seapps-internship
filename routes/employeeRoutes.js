@@ -5,17 +5,19 @@ const app = express()
 const router = express.Router()
 
 //controller functions
-const { employeeSignup, employeeLogin, employeeLogOut } = require('../controllers/employeeController')
+const { employeeGetSignup, employeeGetLogin, employeeSignup, employeeLogin, employeeLogOut } = require('../controllers/employeeController')
 
 //const {} = require('./userRoutes')
 
 //signup route
-router.post('/signup-employee', employeeSignup)
+router.get('/employee/signup', employeeGetSignup)
+router.post('/employee/signup', employeeSignup)
 
 //login route
-router.post('/login-employee', employeeLogin)
+router.get('/employee/login', employeeGetLogin)
+router.post('/employee/login', employeeLogin)
 
 //logout route
-router.get('/logout-employee', employeeLogOut)
+//router.get('/logout', logOut)
 
 module.exports = router

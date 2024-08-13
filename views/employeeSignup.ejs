@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seapps-inc | Employee Signup</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <%- include('partials/headerEmployee'); -%>
+        <h2> Employee Sign-up</h2>
+        <div class="create-signup content">
+            <form action="employee/signup" method="POST">
+              <label for="firstname">First Name </label>
+              <input type="text" id="firstname" name="firstname" required>
+
+              <label for="middlename">Middle Name </label>
+              <input type="text" id="middlename" name="middlename" required>
+
+              <label for="lastname">Last Name </label>
+              <input type="text" id="lastname" name="lastname" required>
+              
+              <label for="suffix">Suffix </label>
+              <input type="text" id="suffix" name="suffix">
+
+              <label for="email">Email </label>
+              <input type="text" id="email" name="email" required>
+              <div class="email error"></div>
+
+              <label for="password">Password: </label>
+              <input type="password" id="password" name="password" required>
+              <div class="password error"></div>
+
+              <label for="confirmpass">Confirm Password: </label>
+              <input type="password" id="confirmpass" name="confirmpass" required>
+
+              <label for="mobilenum">Mobile Phone </label>
+              <input type="text" id="mobilenum" name="mobilenum" required>
+
+              <center><button>Create Account</button>  </center>
+              <label> Already have an Account?</label>
+              <a href="/employee/login" class="form_links">Sign-in</a>
+            </form>
+          </div>
+
+          <script>
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (e)=>{
+              e.preventDefault();
+
+              //get the values
+              const firstname = form.firstname.value;
+              const middlename = form.middlename.value;
+              const lastname = form.lastname.value;
+              const suffix = form.suffix.value;
+              const email = form.email.value;
+              const password = form.password.value;
+              const mobilenum = form.mobilenum.value;
+
+              try{
+                const res = await fetch('employee/signup', {
+                  method: 'POST',
+                  body: JSON.stringify({firstname, middlename, lastname, suffix, email, password, mobilenum}),
+                  headers: {'Content-Type': 'application/json'}
+                });
+                const data = await res.json();
+                if(data.error){
+                  if (data.error.includes('Email')){
+                    emailError.textContent = data.error;
+                  }
+                }
+                if(data.user){
+                  location.assign('/')
+                }
+              } 
+              catch (err){
+                console.log(err);
+              }             
+            });
+          </script>
+
+        <%- include('partials/footer'); -%>

@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 const employeeRoutes = require('./routes/employeeRoutes')
+const attendanceRoutes = require('./routes/attendanceRoutes')
 
 //express app
 const app = express()
@@ -16,17 +17,11 @@ const app = express()
 app.use(express.json())
 app.use(express.static('public'))
 app.use(cookieParser())
-const requireAuth = require('./middleware/requireAuth')
+//app.use(express.urlencoded({ extended: true }));
+const { requireAuth, checkUser } = require('./middleware/authentication')
 
 // view engine
 app.set('view engine', 'ejs')
-
-//routes
-app.use(userRoutes) // signup and login of user
-app.use(adminRoutes)// login of admin
-
-
-
 
 //database connection
 mongoose.connect(process.env.MONGO_URI)
@@ -42,3 +37,12 @@ mongoose.connect(process.env.MONGO_URI)
             res.status(500).json({ error: error.message })
         })
     })
+
+//routes
+app.get('*', checkUser)
+app.get('/', requireAuth, (req, res) => res.render('dashboard'));
+app.use(userRoutes) // signup and login of user
+app.use(adminRoutes)// login of admin
+app.use(employeeRoutes)
+app.use(attendanceRoutes)
+//app.get('/user/signup', (req, res) => res.render('userSignup'))

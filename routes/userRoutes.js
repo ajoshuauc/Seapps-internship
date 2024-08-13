@@ -5,16 +5,18 @@ const app = express()
 const router = express.Router()
 
 //controller functions
-const { userSignup, userLogin, logOut } = require('../controllers/userController')
+const { userGetSignup, userGetLogin, userSignup, userLogin, logOut } = require('../controllers/userController')
 
-//login route
-router.post('/login', userLogin)
+//signup routes
+router.get('/user/signup', userGetSignup)
+router.post('/user/signup', userSignup)
 
-//signup route
-router.post('/signup', userSignup)
+//login routes
+router.get('/user/login', userGetLogin)
+router.post('/user/login', userLogin)
 
 //logout route
-router.get('/logout-user', logOut)
+router.get('/logout', logOut)
 
 module.exports = router
 

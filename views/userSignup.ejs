@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seapps-inc | User Sign-up </title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" href="/seapps-logo.png" type="image/png">
+</head>
+<body>
+  <%- include('partials/headerUser'); -%>
+        <h2> User Sign-up</h2>
+        <div class="create-signup content">
+            <form action="/user/signup" method="POST">
+              <label for="name">Full name </label>
+              <input type="text" id="name" name="name" required>
+              <div class ="name error"></div>
+              
+              <label for="email">Email </label>
+              <input type="text" id="email" name="email" required>
+              <div class="email error"></div>
+
+              <label for="password">Password: </label>
+              <input type="password" id="password" name="password" required>
+              <div class="password error"></div>
+
+              <label for="confirm">Confirm Password: </label>
+              <input type="password" id="confirmPass" name="confirmPass" required>
+
+              <center><button>Create Account</button></center>
+              <label> Already have an Account?</label>
+              <a href="/user/login" class="form_links">Sign-in</a>
+            </form>
+          </div>
+
+          <script>
+            const form = document.querySelector('form');
+            const emailError = document.querySelector('.email.error');
+            const passwordError = document.querySelector('.password.error');
+
+            form.addEventListener('submit', async (e)=>{
+              e.preventDefault();
+
+              //reset errors
+              emailError.textContent = '';
+              passwordError.textContent = '';
+
+              //get the values
+              const name = form.email.value;
+              const email = form.email.value;
+              const password = form.password.value;
+
+              try{
+                const res = await fetch('/user/signup', {
+                  method: 'POST',
+                  body: JSON.stringify({name, email, password}),
+                  headers: {'Content-Type': 'application/json'}
+                });
+                const data = await res.json();
+                if(data.error){
+                  if (data.error.includes('Email')){
+                    emailError.textContent = data.error;
+                  }
+                }
+                if(data.user){
+                  location.assign('/')
+                }
+              } 
+              catch (err){
+                console.log(err);
+              }             
+            });
+          </script>
+
+      <%- include('partials/footer'); -%>

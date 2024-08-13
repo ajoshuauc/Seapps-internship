@@ -5,6 +5,8 @@ const validator = require('validator')
 const adminSchema = new mongoose.Schema({
     name: {
         type: String,
+        unique: true,
+        lowercase: true,
         required: true,
     },
     email: {
@@ -39,6 +41,9 @@ adminSchema.statics.signup = async function (name, email, password) {
     // Email validation
     if (!validator.isEmail(email)) {
         throw new Error('Email not valid');
+    }
+    if (!validator.isLowercase(email)) {
+        throw new Error('Email should be lower case')
     }
 
     // Check if email already exists

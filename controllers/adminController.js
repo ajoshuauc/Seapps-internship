@@ -6,25 +6,41 @@ const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d' })
 }
 
-//user signup
-const adminSignup = async (req, res) => {
-    //get admin details
-    const {name, email, password} = req.body
+//listing and deletion of users
+const listUsers = () => {
 
-    try {
-        const user = await Admin.signup(name, email, password)
-        //create token
-        const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+}
+const deleteUsers = () => {
 
-        //json response
-        res.status(200).json({ email, token })
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
 }
 
-//login user
+const adminGetLogin = (req, res) => {
+    res.render('adminLogin')
+}
+
+const adminDashboard = (req, res) => {
+    res.render('dashboardAdmin')
+}
+
+// //admin signup
+// const adminSignup = async (req, res) => {
+//     //get admin details
+//     const {name, email, password} = req.body
+
+//     try {
+//         const user = await Admin.signup(name, email, password)
+//         //create token
+//         const token = createToken(user._id)
+//         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+
+//         //json response
+//         res.status(200).json({ email, token })
+//     } catch (error) {
+//         res.status(400).json({ error: error.message })
+//     }
+// }
+
+//login admin
 const adminLogin = async (req, res) => {
     //get admin details
     const {email, password} = req.body
@@ -37,7 +53,7 @@ const adminLogin = async (req, res) => {
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
 
         //json response
-        res.status(200).json({ email, token })
+        res.status(200).json({ user: user._id })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -49,7 +65,9 @@ const adminLogOut = (req, res) => {
 }
 
 module.exports = {
-    adminSignup,
+    adminDashboard,
+    adminGetLogin,
+    //adminSignup,
     adminLogin,
     adminLogOut
 }

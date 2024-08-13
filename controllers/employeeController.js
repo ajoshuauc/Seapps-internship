@@ -6,6 +6,14 @@ const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d' })
 }
 
+const employeeGetSignup = (req, res) => {
+    res.render('employeeSignup')
+}
+
+const employeeGetLogin = (req, res) => {
+    res.render('employeeLogin')
+}
+
 //employee signup, redirect to employee
 const employeeSignup = async (req, res) => {
     //get employee details
@@ -36,7 +44,7 @@ const employeeLogin = async (req, res) => {
     const {email, password} = req.body
 
     try {
-        const user = await User.login(email, password)
+        const user = await Employee.login(email, password)
 
         //create token
         const token = createToken(user._id)
@@ -53,4 +61,4 @@ const employeeLogOut = (req, res) => {
     res.redirect('login')
 }
 
-module.exports = { employeeSignup, employeeLogin, employeeLogOut }
+module.exports = { employeeGetSignup, employeeGetLogin, employeeSignup, employeeLogin, employeeLogOut }

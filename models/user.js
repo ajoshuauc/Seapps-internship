@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
+        lowercase: true,
         required: true,
     },
     password: {
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema({
 
 //static signup method
 userSchema.statics.signup = async function (name, email, password) {
-
+    
     // Collect missing fields
     let missingFields = [];
     if (!name) missingFields.push('Name');
@@ -35,7 +37,7 @@ userSchema.statics.signup = async function (name, email, password) {
     if (missingFields.length === 1) {
         throw new Error(`${missingFields[0]} must be filled`);
     }
-
+    
     // Email validation
     if (!validator.isEmail(email)) {
         throw new Error('Email not valid');
@@ -44,7 +46,7 @@ userSchema.statics.signup = async function (name, email, password) {
     // Check if email already exists
     const exists = await this.findOne({ email });
     if (exists) {
-        throw new Error('Account already exists');
+        throw new Error('Email already exists');
     }
 
     // Generate salt and hash password
@@ -66,7 +68,6 @@ userSchema.statics.login = async function (email, password) {
 
     //find if email exists
     const user = await this.findOne({email})
-    console.log(user)
     if (!user) {
         throw Error('incorrect email')
     }
